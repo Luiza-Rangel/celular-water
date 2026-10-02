@@ -1,65 +1,62 @@
-import { StatusBar, View, Text, StyleSheet } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { useState } from 'react';
+import { StatusBar, View, StyleSheet } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
 import Header from './src/components/Header';
 import { WaterProgress } from './src/components/WaterProgress';
-import ActionButon from './src/components/ActionButton';
+import { ActionButtons } from './src/components/ActionButtons';
+
+// Minhas cores
+const COLORS = {
+  background: '#ffffff',
+};
 
 export default function App() {
-    const GOAL = 2000
-  return(
+  // Meta diária em ml
+  const GOAL = 2000; 
+
+  // Estado para guardar o total de água consumida
+  const [consumed, setConsumed] = useState(0);
+
+  // Soma a quantidade clicada ao total
+  const handleAddWater = (ml) => {
+    setConsumed((memoria) => memoria + ml);
+  };
+
+  // Zerar o contador
+  const handleReset = () => {
+    setConsumed(0);
+  };
+
+  return (
     <SafeAreaProvider>
-      <SafeAreaView>
-        <StatusBar barStyle="auto" />
-        <View>
-          <Header GOAL={GOAL} />
-          <WaterProgress consumed={0} goal={GOAL}></WaterProgress>
-          <ActionButon acrescimo={200}></ActionButon>
+      {/* Evita que o topo do telemóvel tape o conteúdo */}
+      <SafeAreaView style={styles.container}>
+        
+        <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
+
+        <View style={styles.content}>
+          <Header goal={GOAL} />
+          <WaterProgress consumed={consumed} goal={GOAL} />
+          
+          {/* Passa as funções para os botões */}
+          <ActionButtons onAdd={handleAddWater} onReset={handleReset} />
         </View>
+
       </SafeAreaView>
     </SafeAreaProvider>
-  )
+  );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     width: '100%',
-//     backgroundColor: 'green',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-
-// })
+// Estilos da página
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

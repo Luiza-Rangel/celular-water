@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet,} from 'react-native'
 import { COLORS } from '../constants/colors'
 
-export default function Header( {GOAL}){
+export function Header( {GOAL}){
     return(
       <View style={styles.container}>
         <Text style={styles.title}>Diario de Hidratação</Text>
